@@ -1,0 +1,37 @@
+# ── Environment & secrets ────────────────────────────────────────────────────
+.env
+*.env.local
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── Agent outputs (generated at runtime) ─────────────────────────────────────
+execution_plan.txt
+changes_summary.txt
+agent_run.log
+
+# ── Cloned target repository ──────────────────────────────────────────────────
+workspace/
+
+# ── IDE / editor ──────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
