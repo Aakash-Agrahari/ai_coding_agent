@@ -25,18 +25,15 @@ from dotenv import load_dotenv
 import google.genai as genai
 from google.genai import types
 
-# ---------------------------------------------------------------------------
+
 # Bootstrap
-# ---------------------------------------------------------------------------
 load_dotenv()
 
 REPO_URL  = "https://github.com/callicoder/node-easy-notes-app"
 WORKSPACE = Path(__file__).parent / "workspace" / "node-easy-notes-app"
 
-# ---------------------------------------------------------------------------
-# Tool implementations
-# ---------------------------------------------------------------------------
 
+# Tool implementations
 def list_files(path: str) -> str:
     """Recursively list all files in a directory inside the workspace."""
     target = WORKSPACE / path
@@ -124,10 +121,8 @@ def summarise_changes(summary_text: str) -> str:
     return f"Summary saved to {summary_path}"
 
 
-# ---------------------------------------------------------------------------
-# Tool dispatcher
-# ---------------------------------------------------------------------------
 
+# Tool dispatcher
 TOOL_FUNCTIONS = {
     "list_files":       list_files,
     "read_file":        read_file,
@@ -147,10 +142,8 @@ def dispatch_tool(name: str, args: dict) -> str:
         return f"ERROR calling {name}: {e}"
 
 
-# ---------------------------------------------------------------------------
-# Tool declarations for the Gemini API
-# ---------------------------------------------------------------------------
 
+# Tool declarations for the Gemini API
 TOOL_DECLARATIONS = types.Tool(function_declarations=[
     types.FunctionDeclaration(
         name="list_files",
@@ -229,10 +222,8 @@ TOOL_DECLARATIONS = types.Tool(function_declarations=[
 ])
 
 
-# ---------------------------------------------------------------------------
-# System prompt
-# ---------------------------------------------------------------------------
 
+# System prompt
 SYSTEM_INSTRUCTIONS = textwrap.dedent("""
     You are a senior Node.js developer and an autonomous AI coding agent.
 
@@ -294,10 +285,8 @@ SYSTEM_INSTRUCTIONS = textwrap.dedent("""
 """).strip()
 
 
-# ---------------------------------------------------------------------------
-# Repository bootstrap
-# ---------------------------------------------------------------------------
 
+# Repository bootstrap
 def ensure_repo_cloned() -> None:
     if WORKSPACE.exists() and (WORKSPACE / "server.js").exists():
         print(f"✓  Repository already present at {WORKSPACE}")
@@ -314,13 +303,11 @@ def ensure_repo_cloned() -> None:
     print("✓  Repository cloned successfully.")
 
 
-# ---------------------------------------------------------------------------
-# Agentic loop
-# ---------------------------------------------------------------------------
 
+# Agentic loop
 def run_agent(api_key: str) -> None:
     client = genai.Client(api_key=api_key)
-    model  = "gemini-2.0-flash"
+    model  = "gemini-3.5-flash-lite"
 
     task = (
         "Improve the application so users can better organise and search their notes.\n\n"
@@ -420,10 +407,8 @@ def run_agent(api_key: str) -> None:
         print(f"\n⚠  Reached max iterations ({max_iterations}). Agent stopped.")
 
 
-# ---------------------------------------------------------------------------
-# Entry point
-# ---------------------------------------------------------------------------
 
+# Entry point
 def main() -> None:
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
